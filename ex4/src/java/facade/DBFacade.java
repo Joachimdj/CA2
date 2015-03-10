@@ -19,7 +19,7 @@ import javax.persistence.Query;
  */
 public class DBFacade {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2PU");
     private EntityManager em = emf.createEntityManager();
 
     public Person getPerson(Long id) {
