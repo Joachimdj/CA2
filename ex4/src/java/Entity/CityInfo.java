@@ -21,6 +21,33 @@ public class CityInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long zipcode;
+    private String city; 
+
+    public CityInfo(Long zipcode, String city) {
+        this.zipcode = zipcode;
+        this.city = city;
+    }
+
+    public CityInfo() {
+    }
+
+    public Long getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(Long zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+    
 
     public Long getId() {
         return id;

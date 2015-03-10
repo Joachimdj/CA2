@@ -21,6 +21,62 @@ public class Company implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name; 
+    private String description;
+    private String cvr;
+    private Long NumEmployess;
+    private Long MarketValue;
+
+    public Company(String name, String description, String cvr, Long NumEmployess, Long MarketValue) {
+        this.name = name;
+        this.description = description;
+        this.cvr = cvr;
+        this.NumEmployess = NumEmployess;
+        this.MarketValue = MarketValue;
+    }
+
+    public Company() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCvr() {
+        return cvr;
+    }
+
+    public void setCvr(String cvr) {
+        this.cvr = cvr;
+    }
+
+    public Long getNumEmployess() {
+        return NumEmployess;
+    }
+
+    public void setNumEmployess(Long NumEmployess) {
+        this.NumEmployess = NumEmployess;
+    }
+
+    public Long getMarketValue() {
+        return MarketValue;
+    }
+
+    public void setMarketValue(Long MarketValue) {
+        this.MarketValue = MarketValue;
+    }
 
     public Long getId() {
         return id;
