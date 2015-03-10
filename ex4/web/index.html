@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Players table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script> 
+        <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+ 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ 
+        <script>  
+            $(document).ready( function() {
+                
+               $(".loader").fadeOut("slow"); 
+             $("#findAll").click(findAll);
+             });
+                  
+                 function findAll(){ 
+              $(".loader").fadeIn("slow");
+               var request = $.ajax({
+                   url: "api/person", 
+                   type: "GET",
+                   dataType: "json"
+                   
+                   
+               });
+               
+               request.done(function (msg){
+                   
+                   $('#allPlayers').empty();
+                   
+                
+                  for (var i =0; i < msg.length; i++){
+                       var li ="<tr><td>"+msg[i].id;
+                       li += "</td><td>"+msg[i].firstName+"</td><td>"+msg[i].lastName+"</td>";
+                       li += "<td><button class='btn btn-info btn-s'>Edit</button><a target='_blank' href='api/person/delete/"+msg[i].id+"' class='btn btn-danger btn-s'>Delete</a></tr>";
+                   
+                   $("#allPlayers").append(li);
+                   } 
+                   $(".loader").fadeOut("slow");
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                    $(".loader").fadeOut("slow");
+                });
+               
+               
+                 
+             } 
+                 function addStudent(){  
+                   $('#modelBody').empty();
+             $('#modelBody').empty();  
+               var li ='<p>Matnr:</br><input id="matNr" class="form-control" name="matNr" type="text" placeholder="Your matNr" class="input-xlarge" required=""></p>\n\
+                        <p>MatDate:</br><input type="hidden" value="1" name="type"><input id="matDate" class="form-control" name="matDate" type="text" placeholder="2001-01-01" class="input-xlarge" required=""></p>';
+           $("#modelBody").append(li);
+             
+             } 
+                   function addEmployee(){  
+                    $('#modelBody').empty(); 
+                
+               var li ='<p>SoSec:</br><input id="SoSec" class="form-control" name="SoSec" type="text" placeholder="Your SoSec" class="input-xlarge" required=""></p>\n\
+                        <p>Wage:</br><input id="wage" class="form-control" name="wage" type="text" placeholder="2131232" class="input-xlarge" required=""></p>\n\
+                        <p>TaxClass:</br><input type="hidden" value="2" name="type"><input id="taxClass" class="form-control" name="taxClass" type="text" placeholder="High/low" class="input-xlarge" required=""></p>';
+                     $("#modelBody").append(li);
+                 }
+                   function addPhDStudent(){  
+                    $('#modelBody').empty(); 
+           
+               var li ='<p>SoSec:</br><input id="SoSec" class="form-control" name="SoSec" type="text" placeholder="Your SoSec" class="input-xlarge" required=""></p>\n\
+                        <p>Wage:</br><input type="text" value="3" name="type"><input id="wage" class="form-control" name="wage" type="text" placeholder="2131232" class="input-xlarge" required=""></p>';
+                $("#modelBody").append(li);
+                 }
+           
+               
+        </script>
+    </head>
+    <body > <br>
+        <p align="center">
+            
+        <button   type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Add Student</button> 
+        <div id="links"></div>
+            
+        
+        <p align="center"><button id="findAll" class="btn btn-success">Show all persons</button> 
+       <div class="loader"></div>
+      <table class="table" id="allPlayers">
+            
+            
+        </table>
+ 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body" >
+           <form method="POST" action="api/person/add/1">
+          <p>Firstname</br><input id="firstname" class="form-control" name="firstname" type="text" placeholder="Your Firstname" class="input-xlarge"  > 
+       <p>Lastname</br><input id="lastname"  class="form-control" name="lastname" type="text" placeholder="Your Lastname" class="input-xlarge" ></p>
+       <p>BirthDay</br><input id="birthDate" class="form-control" name="birthDate" type="text" placeholder="2001-01-01" class="input-xlarge"  ></p> 
+       <p>Age:</br><input id="age" name="age" class="form-control" type="text" placeholder="20" class="input-xlarge"  ></p>
+       <p>Married?: </br><input type="checkbox" class="form-control" name="checkboxes" id="checkbox" value="true"></p>
+       <i id="modelBody"></i>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="findAll()" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    </body>
+</html>
