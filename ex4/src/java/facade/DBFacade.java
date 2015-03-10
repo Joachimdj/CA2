@@ -47,13 +47,13 @@ public class DBFacade {
     }
 
     public List<Person> findByHobby(Hobby h) {
-        Query query = em.createQuery("SELECT p FROM Person p JOIN p.Hobby h WHERE h = " + h.getZipcode());
+        Query query = em.createQuery("SELECT p FROM Person p JOIN p.Hobby h WHERE h = " + h.getName());
         List<Person> byHobby = query.getResultList();
         return byHobby;
     }
-
+    
     public List<String> getAllZipCodes() {
-        Query query = em.createQuery("SELECT z.zipcode FROM CityFnfo");
+        Query query = em.createQuery("SELECT z.zipcode FROM CityInfo");
         List<String> zipcodes = query.getResultList();
         return zipcodes;
         
