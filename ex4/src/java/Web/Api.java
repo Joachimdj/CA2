@@ -48,9 +48,10 @@ public class Api {
 
     @POST
     @Path("add")
+    
     public String addPerson(String s) {
         Person p = gson.fromJson(s, Person.class);
-
+        
         facade.createPerson(p);
         return "{\"result\" : \"Ok\"}";
     }
@@ -88,18 +89,21 @@ public class Api {
         return json;
     }
 
-      @GET
+      @DELETE
       @Path("delete/{id}") 
     public void deletePerson(@PathParam("id") int id) throws NonexistentEntityException {
         Long id1 = (long)id;
          facade.deletePerson(id1);
     }
-    
-    @PUT
-    @Produces("application/json")
-    public String editPerson(@PathParam("id") Long id) {
-        return "";
+      @POST
+      @Path("edit/{id}") 
+    public void editPerson(@PathParam("id") int id, String s) throws NonexistentEntityException {
+        Long id1 = (long)id;
+      //    Person p = gson.fromJson(s, Person.class);
+     //     facade.updatePerson(p);
     }
+    
+    
 
 
 }
