@@ -106,28 +106,20 @@ public class Api {
         }
         String json = gson.toJson(p);
         return json;
-
-        /*
-        
-         Mangler nogle JOIN statements for at få addresse/phone fra databasen
-         */
-//        JsonObject jo = new JsonObject();
-//        jo.addProperty("firstName", p.getFirstName());
-//        jo.addProperty("lastName", p.getLastName());
-//        jo.addProperty("email", );
     }
 
+    @DELETE
+    @Path("{id}/delete")
+    public void deletePerson(@PathParam("id")String s) throws NonexistentEntityException {
+        Long id = Long.parseLong(s);
+        facade.deletePerson(id);
+    }
+    
     @PUT
     @Produces("application/json")
     public String editPerson(@PathParam("id") Long id) {
         return "";
     }
 
-    @DELETE
-    @Consumes("text/plain")
-    public void deletePerson(String s) throws NonexistentEntityException {
-        Long id = Long.parseLong(s);
-        facade.deletePerson(id);
-    }
 
 }

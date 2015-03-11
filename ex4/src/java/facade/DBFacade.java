@@ -51,9 +51,11 @@ public class DBFacade {
         Person p = new Person();
         p.setId(id);
         
-        em.getTransaction().begin();
-        em.remove(id);
-        em.getTransaction().commit();
+        Query query = em.createQuery("DELETE FROM Person p WHERE p.id = "+id);
+//        Query query2 = em.createQuery("DELETE FROM InfoEntity ie WHERE ie.id = "+id);
+        query.executeUpdate();
+        
+        
     }
     
     public void createPerson(Person p) {
