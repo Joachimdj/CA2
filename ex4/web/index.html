@@ -59,7 +59,6 @@ and open the template in the editor.
               
                     //Edits person information by ID
                  function editPerson(id){ 
-                     alert(id);
                       var myData = {
                       firstName:$("#firstName"+id).val(),
                       lastName:$("#lastName"+id).val(),
@@ -71,17 +70,15 @@ and open the template in the editor.
                   
                
                   var myData1 = JSON.stringify(myData);
-                alert(myData1);
+              
                var request = $.ajax({
                    url: "api/person/edit/"+id, 
                    type: "POST",
-                   dataType: "json"
-                   
-                   
+                   dataType: "json" 
                });
                
                request.done(function (msg){
-                alert(msg);
+                findAll()
                   });
                   
                 request.fail(function (jqXHR, textStatus){ 
@@ -102,6 +99,8 @@ and open the template in the editor.
                }); 
                request.done(function (msg){ 
                 findAll();
+                  $('#saved').fadeOut();
+                    $('#deleted').fadeIn();
                   });
                   
                 request.fail(function (jqXHR, textStatus){ 
@@ -136,9 +135,14 @@ and open the template in the editor.
                
                request.done(function (msg){
                 //alert(msg);
-               
+                 $('#deleted').fadeOut();
+                    $('#saved').fadeIn();
                 findAll();
                  $('#myModal').modal('hide');
+             
+               
+                
+                
                   });
                   
                 request.fail(function (jqXHR, textStatus){ 
@@ -154,6 +158,8 @@ and open the template in the editor.
         </script>
     </head>
     <body > <br>
+        <p><div id="saved" hidden align="center" class="alert alert-success" role="alert"><h2>Person saved</h2></div> 
+        <div hidden id="deleted" align="center" class="alert alert-danger" role="alert"><h2>Person deleted</h2></div></p>
         <p align="center">
             
         <button   type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Add Student</button> 
