@@ -19,8 +19,21 @@ import javax.persistence.Query;
  */
 public class DBFacade {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2PU");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2");
     private EntityManager em = emf.createEntityManager();
+
+    private static DBFacade instance = null;
+
+    private DBFacade() {
+
+    }
+
+    public static DBFacade getInstance() {
+        if (instance == null) {
+            instance = new DBFacade();
+        }
+        return instance;
+    }
 
     public Person getPerson(Long id) {
         Person found = em.find(Person.class, id);
@@ -39,8 +52,8 @@ public class DBFacade {
         em.persist(p);
         em.getTransaction().commit();
     }
-    
-    public void updatePerson(Person p){
+
+    public void updatePerson(Person p) {
         em.getTransaction().begin();
         em.merge(p);
         em.getTransaction().commit();
@@ -51,20 +64,20 @@ public class DBFacade {
         List<Person> byHobby = query.getResultList();
         return byHobby;
     }
-    
+
     public List<String> getAllZipCodes() {
         Query query = em.createQuery("SELECT z.zipcode FROM CityInfo");
         List<String> zipcodes = query.getResultList();
         return zipcodes;
-        
+
         /*
-        Query query = em.createQuery("SELECT c FROM CityInfo");
-        List<CityInfo> ciList = query.getResultList();
-        List<String> zipcodes = new ArrayList();
-        for(CityInfo ci : ciList){
-            zipcodes.add(ci.getZipcode());
-        }
-        return zipcodes;
-        */
+         Query query = em.createQuery("SELECT c FROM CityInfo");
+         List<CityInfo> ciList = query.getResultList();
+         List<String> zipcodes = new ArrayList();
+         for(CityInfo ci : ciList){
+         zipcodes.add(ci.getZipcode());
+         }
+         return zipcodes;
+         */
     }
 }

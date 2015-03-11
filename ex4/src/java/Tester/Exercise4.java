@@ -7,9 +7,7 @@ package Tester;
   
 import Entity.Person;
 import Entity.exceptions.NonexistentEntityException; 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import facade.DBFacade;
 /**
  *
  * @author JoachimDittman
@@ -20,15 +18,13 @@ public class Exercise4 {
      * @param args the command line arguments
      */
        public static void main(String[] args) throws NonexistentEntityException, Exception {
-             EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2");
-             EntityManager em = emf.createEntityManager(); 
-             
-           Person p1 = new Person("Hans","Christian");
-        
-           em.getTransaction().begin();
-           em.persist(p1);
-           em.getTransaction().commit();
+             DBFacade facade = DBFacade.getInstance();
+             Person p = new Person("Lars", "Larsen");
+             Person p1 = new Person("Mads", "Larsen");
       
+             facade.createPerson(p);
+             facade.createPerson(p1);
+             
     }
     
 }

@@ -34,7 +34,7 @@ public class Api {
     @Context
     private UriInfo context;
     private Object rand;
-    private DBFacade facade = new DBFacade();
+    private DBFacade facade = DBFacade.getInstance();
 
     private Gson gson = new Gson();
 
@@ -62,8 +62,6 @@ public class Api {
             throw new NonexistentEntityException("404: No persons in database");
         }
         String json = gson.toJson(allPersons);
-        json = "Hej för dig og hej för mig";
-        System.out.println(json);
         return json;
     }
 
@@ -91,7 +89,10 @@ public class Api {
 
     @POST
     @Consumes("application/json")
-    public Response addPerson(Person p) {
+    public Response addPerson(String jsonStr) {
+        
+        Person p = gson.fromJson(jsonStr, Person.class);
+        
         facade.createPerson(p);
         System.out.println(p.toString());
         return Response.status(Response.Status.OK).entity("Person saved(no error handling)").build();
