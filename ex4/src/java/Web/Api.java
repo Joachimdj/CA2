@@ -47,32 +47,12 @@ public class Api {
     }
 
     @POST
-    @Consumes("text/plain")
+    @Path("add")
     public String addPerson(String s) {
-
-        Map<String, String> map = new HashMap();
-        s = s.replace("[", "");
-        s = s.replace("]", "");
-
-        String[] entities = s.split(",");
-
-        for (String str : entities) {
-            str = str.replace("{", "");
-            str = str.replace("}", "");
-            String[] keyValue = str.split(":");
-            keyValue[0] = keyValue[0].replace("\"", "");
-            keyValue[1] = keyValue[1].replace("\"", "");
-
-            map.put(keyValue[0], keyValue[1]);
-        }
-
-        String firstName = map.get("firstName");
-        String lastName = map.get("lastName");
-
-        Person p = new Person(firstName, lastName);
+        Person p = gson.fromJson(s, Person.class);
 
         facade.createPerson(p);
-        return "{\"name\" : \"Joachim\"}";
+        return "{\"result\" : \"Ok\"}";
     }
 
     /**
@@ -108,11 +88,11 @@ public class Api {
         return json;
     }
 
-    @DELETE
-    @Path("{id}/delete")
-    public void deletePerson(@PathParam("id")String s) throws NonexistentEntityException {
-        Long id = Long.parseLong(s);
-        facade.deletePerson(id);
+      @GET
+      @Path("delete/{id}") 
+    public void deletePerson(@PathParam("id") int id) throws NonexistentEntityException {
+        Long id1 = (long)id;
+         facade.deletePerson(id1);
     }
     
     @PUT

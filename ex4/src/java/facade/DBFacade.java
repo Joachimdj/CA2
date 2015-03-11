@@ -48,12 +48,12 @@ public class DBFacade {
     }
 
     public void deletePerson(Long id){
-        Person p = new Person();
-        p.setId(id);
-        
+         
         Query query = em.createQuery("DELETE FROM Person p WHERE p.id = "+id);
 //        Query query2 = em.createQuery("DELETE FROM InfoEntity ie WHERE ie.id = "+id);
+        em.getTransaction().begin();
         query.executeUpdate();
+        em.getTransaction().commit();
         
         
     }
