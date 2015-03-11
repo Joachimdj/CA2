@@ -21,7 +21,6 @@ public class Person extends InfoEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         
-        super.setName(firstName + " " + lastName);
     }
 
     public Person() {

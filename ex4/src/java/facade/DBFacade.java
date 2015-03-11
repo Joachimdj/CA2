@@ -47,6 +47,15 @@ public class DBFacade {
         return allPersons;
     }
 
+    public void deletePerson(Long id){
+        Person p = new Person();
+        p.setId(id);
+        
+        em.getTransaction().begin();
+        em.remove(id);
+        em.getTransaction().commit();
+    }
+    
     public void createPerson(Person p) {
         em.getTransaction().begin();
         em.persist(p);

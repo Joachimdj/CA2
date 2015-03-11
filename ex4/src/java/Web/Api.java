@@ -46,30 +46,35 @@ public class Api {
 
     }
 
-    
     @POST
     @Consumes("text/plain")
     public String addPerson(String s) {
-        
-        Map<String,String> map = new HashMap();
+
+        Map<String, String> map = new HashMap();
+        s = s.replace("[", "");
+        s = s.replace("]", "");
+
         String[] entities = s.split(",");
-        
-        for (String str : entities){
-            String[] keyValue = str.split(": ");
+
+        for (String str : entities) {
+            str = str.replace("{", "");
+            str = str.replace("}", "");
+            String[] keyValue = str.split(":");
             keyValue[0] = keyValue[0].replace("\"", "");
             keyValue[1] = keyValue[1].replace("\"", "");
-            
+
             map.put(keyValue[0], keyValue[1]);
         }
-        
+
         String firstName = map.get("firstName");
         String lastName = map.get("lastName");
-        
+
         Person p = new Person(firstName, lastName);
-        
+
         facade.createPerson(p);
-        return p.getId()+"";
+        return p.getId() + "";
     }
+
     /**
      * Retrieves representation of an instance of api.Api
      *
@@ -78,12 +83,12 @@ public class Api {
     @GET
     @Produces("text/plain")
     public String getAllPersons() throws NonexistentEntityException {
-        
+
         //  Meget forsimplet, man får ikke alle oplysninger med,
         //  men det kan umiddelbart være fint, bare man kan se personerne
         //  så kan man finde en specifik person senere og få mere info
         List<Person> allPersons = facade.getAllPersons();
-        if (allPersons == null){
+        if (allPersons == null) {
             throw new NonexistentEntityException("404: No persons in database");
         }
         String json = gson.toJson(allPersons);
@@ -94,24 +99,23 @@ public class Api {
     @Path("{id}")
     @Produces("application/json")
     public String getSinglePerson(@PathParam("id") long id) throws NonexistentEntityException {
-        
+
         Person p = facade.getPerson(id);
-        if(p == null){
+        if (p == null) {
             throw new NonexistentEntityException("404: Person not found");
         }
         String json = gson.toJson(p);
         return json;
-        
+
         /*
         
-            Mangler nogle JOIN statements for at få addresse/phone fra databasen
-        */
+         Mangler nogle JOIN statements for at få addresse/phone fra databasen
+         */
 //        JsonObject jo = new JsonObject();
 //        jo.addProperty("firstName", p.getFirstName());
 //        jo.addProperty("lastName", p.getLastName());
 //        jo.addProperty("email", );
     }
-
 
     @PUT
     @Produces("application/json")
@@ -120,9 +124,10 @@ public class Api {
     }
 
     @DELETE
-    @Consumes("application/json")
-    public void deletePerson(Person p) throws NonexistentEntityException {
-        
+    @Consumes("text/plain")
+    public void deletePerson(String s) throws NonexistentEntityException {
+        Long id = Long.parseLong(s);
+        facade.deletePerson(id);
     }
 
 }
