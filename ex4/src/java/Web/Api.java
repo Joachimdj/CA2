@@ -17,8 +17,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import com.google.gson.Gson;
-import com.google.gson.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -50,7 +51,21 @@ public class Api {
     @Consumes("text/plain")
     public String addPerson(String s) {
         
-        Person p = gson.fromJson(s, Person.class);
+        Map<String,String> map = new HashMap();
+        String[] entities = s.split(",");
+        
+        for (String str : entities){
+            String[] keyValue = str.split(": ");
+            keyValue[0] = keyValue[0].replace("\"", "");
+            keyValue[1] = keyValue[1].replace("\"", "");
+            
+            map.put(keyValue[0], keyValue[1]);
+        }
+        
+        String firstName = map.get("firstName");
+        String lastName = map.get("lastName");
+        
+        Person p = new Person(firstName, lastName);
         
         facade.createPerson(p);
         return p.getId()+"";
