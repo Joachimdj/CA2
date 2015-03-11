@@ -17,11 +17,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import com.google.gson.Gson;
+import com.google.gson.*;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
-import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -45,6 +45,16 @@ public class Api {
 
     }
 
+    
+    @POST
+    @Consumes("text/plain")
+    public String addPerson(String s) {
+        
+        Person p = gson.fromJson(s, Person.class);
+        
+        facade.createPerson(p);
+        return p.getId()+"";
+    }
     /**
      * Retrieves representation of an instance of api.Api
      *
@@ -87,16 +97,6 @@ public class Api {
 //        jo.addProperty("email", );
     }
 
-    @POST
-    @Consumes("application/json")
-    public Response addPerson(String jsonStr) {
-        
-        Person p = gson.fromJson(jsonStr, Person.class);
-        
-        facade.createPerson(p);
-        System.out.println(p.toString());
-        return Response.status(Response.Status.OK).entity("Person saved(no error handling)").build();
-    }
 
     @PUT
     @Produces("application/json")

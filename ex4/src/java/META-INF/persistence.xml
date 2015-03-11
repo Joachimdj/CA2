@@ -8,7 +8,7 @@
     <class>Entity.InfoEntity</class>
     <class>Entity.Person</class>
     <class>Entity.Phone</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/CA2"/>
       <property name="javax.persistence.jdbc.user" value="test"/>
