@@ -24,16 +24,16 @@ public class DBFacade {
 
     private static DBFacade instance = null;
 
-    private DBFacade() {
+    public DBFacade() {
 
     }
 
-    public static DBFacade getInstance() {
-        if (instance == null) {
-            instance = new DBFacade();
-        }
-        return instance;
-    }
+//    public static DBFacade getInstance() {
+//        if (instance == null) {
+//            instance = new DBFacade();
+//        }
+//        return instance;
+//    }
 
     public Person getPerson(Long id) {
         Person found = em.find(Person.class, id);

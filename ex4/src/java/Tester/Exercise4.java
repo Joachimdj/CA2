@@ -18,7 +18,7 @@ public class Exercise4 {
      * @param args the command line arguments
      */
        public static void main(String[] args) throws NonexistentEntityException, Exception {
-             DBFacade facade = DBFacade.getInstance();
+             DBFacade facade = new DBFacade();
              Person p = new Person("Lars", "Larsen");
              Person p1 = new Person("Mads", "Larsen");
       

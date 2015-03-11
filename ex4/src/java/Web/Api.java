@@ -34,7 +34,7 @@ public class Api {
     @Context
     private UriInfo context;
     private Object rand;
-    private DBFacade facade = DBFacade.getInstance();
+    private DBFacade facade = new DBFacade();
 
     private Gson gson = new Gson();
 
