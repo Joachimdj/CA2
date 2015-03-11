@@ -72,7 +72,7 @@ public class Api {
         Person p = new Person(firstName, lastName);
 
         facade.createPerson(p);
-        return p.getId() + "";
+        return "{\"name\" : \"Joachim\"}";
     }
 
     /**

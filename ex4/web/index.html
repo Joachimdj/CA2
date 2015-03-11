@@ -17,13 +17,13 @@ and open the template in the editor.
  
         <script>  
             $(document).ready( function() {
-                
-               $(".loader").fadeOut("slow"); 
+                 
              $("#findAll").click(findAll);
+             $("#createPerson").click(createPerson);
+          
              });
-                  
-                 function findAll(){ 
-              $(".loader").fadeIn("slow");
+                  //GETS all Persons with information
+                 function findAll(){  
                var request = $.ajax({
                    url: "api/person", 
                    type: "GET",
@@ -35,49 +35,107 @@ and open the template in the editor.
                request.done(function (msg){
                    
                    $('#allPlayers').empty();
-                   
-                
+          
+                li += "</td><td>FirstName</td><td>LastName</td><td>Email</td><td>Telefone</td><td>Street</td><td>Zipcode</td><td>City</td><td>AdditinalInfo</td>";
                   for (var i =0; i < msg.length; i++){
+                           
+       
                        var li ="<tr><td>"+msg[i].id;
-                       li += "</td><td>"+msg[i].firstName+"</td><td>"+msg[i].lastName+"</td>";
-                       li += "<td><button class='btn btn-info btn-s'>Edit</button><a target='_blank' href='api/person/delete/"+msg[i].id+"' class='btn btn-danger btn-s'>Delete</a></tr>";
+                       li += "</td><td>"+msg[i].firstName+"</td><td>"+msg[i].lastName+"</td><td>"+msg[i].email+"</td><td>"+msg[i].number+"</td><td>"+msg[i].street+"</td><td>"+msg[i].zipcode+"</td><td>"+msg[i].city+"</td><td>"+msg[i].AdditionalInfo+"</td>";
+                       li += "<td><button class='btn btn-info btn-s' id='editPerson"+msg[i].id+"'>Edit</button><a onclick='deletePerson("+msg[i].id+")' class='btn btn-danger btn-s'>Delete</a></tr>";
                    
                    $("#allPlayers").append(li);
-                   } 
-                   $(".loader").fadeOut("slow");
+                   }  
+                        
                   });
                   
                 request.fail(function (jqXHR, textStatus){ 
                     alert("Request faile:"+ textStatus);
-                    $(".loader").fadeOut("slow");
+                  
                 });
                
                
                  
              } 
-                 function addStudent(){  
-                   $('#modelBody').empty();
-             $('#modelBody').empty();  
-               var li ='<p>Matnr:</br><input id="matNr" class="form-control" name="matNr" type="text" placeholder="Your matNr" class="input-xlarge" required=""></p>\n\
-                        <p>MatDate:</br><input type="hidden" value="1" name="type"><input id="matDate" class="form-control" name="matDate" type="text" placeholder="2001-01-01" class="input-xlarge" required=""></p>';
-           $("#modelBody").append(li);
-             
+              
+                    //Edits person information by ID
+                 function editPerson(id){ 
+                     alert("edit");
+               var request = $.ajax({
+                   url: "api/person"+id, 
+                   type: "POST",
+                   dataType: "json"
+                   
+                   
+               });
+               
+               request.done(function (msg){
+                alert(msg);
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+                 
              } 
-                   function addEmployee(){  
-                    $('#modelBody').empty(); 
-                
-               var li ='<p>SoSec:</br><input id="SoSec" class="form-control" name="SoSec" type="text" placeholder="Your SoSec" class="input-xlarge" required=""></p>\n\
-                        <p>Wage:</br><input id="wage" class="form-control" name="wage" type="text" placeholder="2131232" class="input-xlarge" required=""></p>\n\
-                        <p>TaxClass:</br><input type="hidden" value="2" name="type"><input id="taxClass" class="form-control" name="taxClass" type="text" placeholder="High/low" class="input-xlarge" required=""></p>';
-                     $("#modelBody").append(li);
-                 }
-                   function addPhDStudent(){  
-                    $('#modelBody').empty(); 
-           
-               var li ='<p>SoSec:</br><input id="SoSec" class="form-control" name="SoSec" type="text" placeholder="Your SoSec" class="input-xlarge" required=""></p>\n\
-                        <p>Wage:</br><input type="text" value="3" name="type"><input id="wage" class="form-control" name="wage" type="text" placeholder="2131232" class="input-xlarge" required=""></p>';
-                $("#modelBody").append(li);
-                 }
+             
+                 //Delete person
+                 function deletePerson(id){ 
+                     alert(id);
+               var request = $.ajax({ 
+                   url: "api/person/"+id, 
+                   type: "DELETE" 
+               });
+               
+               request.done(function (msg){
+                alert(msg);
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+        
+             } 
+               //Create personasdasda
+                 function createPerson(){  
+                   var myData = {
+                      firstName:$("#firstName").val(),
+                      lastName:$("#lastName").val(),
+                      email:$("#email").val(),
+                      street:$("#street").val(),
+                      zipCode:$("#zipCode").val(),
+                      city:$("#city").val()
+                  };
+                  
+               
+                  var myData1 = JSON.stringify(myData);
+                  alert(myData1);
+               
+               var request = $.ajax({ 
+                   url: "api/person", 
+                   type: "POST",
+                  dataType:"text", 
+                  data:myData1
+               });
+               
+               request.done(function (msg){
+                alert(msg);
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+                 
+             } 
            
                
         </script>
@@ -104,20 +162,23 @@ and open the template in the editor.
       <div class="modal-header">
          
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Create person</h4>
       </div>
       <div class="modal-body" >
-           <form method="POST" action="api/person/add/1">
-          <p>Firstname</br><input id="firstname" class="form-control" name="firstname" type="text" placeholder="Your Firstname" class="input-xlarge"  > 
-       <p>Lastname</br><input id="lastname"  class="form-control" name="lastname" type="text" placeholder="Your Lastname" class="input-xlarge" ></p>
-       <p>BirthDay</br><input id="birthDate" class="form-control" name="birthDate" type="text" placeholder="2001-01-01" class="input-xlarge"  ></p> 
-       <p>Age:</br><input id="age" name="age" class="form-control" type="text" placeholder="20" class="input-xlarge"  ></p>
-       <p>Married?: </br><input type="checkbox" class="form-control" name="checkboxes" id="checkbox" value="true"></p>
+           <form method="POST" >
+          <p>Firstname</br><input id="firstName" class="form-control" name="firstName" value="John" type="text" placeholder="Your Firstname" class="input-xlarge"  > 
+       <p>Lastname</br><input id="lastName"  class="form-control" name="lastName" value="Bob" type="text" placeholder="Your Lastname" class="input-xlarge" ></p>
+       <p>Email</br><input id="email" class="form-control" name="email" value="john@email.com" type="text" placeholder="contact@person.com" class="input-xlarge"  ></p> 
+       <p>Phone:</br><input id="phone" name="phone" value="22991199" class="form-control" type="text" placeholder="88888888" class="input-xlarge"  ></p>
+       <p>Street:</br><input id="street" name="street" value="Something road 23"  class="form-control" type="text" placeholder="Something something road 23" class="input-xlarge"  ></p>
+       <p>Zipcode:</br><input id="zipCode" name="zipcode" value="2900" class="form-control" type="text" placeholder="2900" class="input-xlarge"  ></p>
+      <p>City:</br><input id="city" name="city" value="Happiness" class="form-control" type="text" placeholder="Happinnes" class="input-xlarge"  ></p>
+      <p>Additionel info:</br><input id="additionalInfo" value="People with cash" name="additionalInfo" class="form-control" type="text" placeholder="Party all night" class="input-xlarge"  ></p>
        <i id="modelBody"></i>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" onclick="findAll()" class="btn btn-primary">Create</button>
+        <a id="createPerson"  class="btn btn-primary">Create Person</a>
         </form>
       </div>
     </div>
