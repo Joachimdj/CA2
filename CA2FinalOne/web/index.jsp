@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Players table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script> 
+        <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+ 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ 
+        <script>  
+            $(document).ready( function() {
+                 findAll();
+             $("#findAll").click(findAll);
+             $("#createPerson").click(createPerson);
+          
+             });
+                  //GETS all Persons with information
+                 function findAll(){  
+               var request = $.ajax({
+                   url: "api/person", 
+                   type: "GET",
+                   dataType: "json"
+                   
+                   
+               });
+               
+               request.done(function (msg){
+                   
+                   $('#allPlayers').empty();
+           
+                  for (var i =0; i < msg.length; i++){
+                           
+       
+                   var   li ="<tr><td>"+msg[i].id;
+                       li += "</td><td><input id='firstName"+msg[i].id+"'  class='form-control' value='"+msg[i].firstName+"'  type='text' class='input-large' ></td><td><input id='lastName"+msg[i].id+"'  class='form-control' value='"+msg[i].lastName+"'   type='text'   class='input-large' ></td><td><input id='email"+msg[i].id+"'  class='form-control' value='"+msg[i].email+"'    type='text'  class='input-xlarge' ></td><td><input id='number"+msg[i].id+"'  class='form-control' value='"+msg[i].number+"'    type='text'   class='input-large' ></td><td><input id='street"+msg[i].id+"'  class='form-control' value='"+msg[i].street+"'     type='text'   class='input-large' ></td>";
+                       li += "<td><a class='btn btn-info btn-s' onclick='editPerson("+msg[i].id+")'  >Save changes</a> <a onclick='deletePerson("+msg[i].id+")' class='btn btn-danger btn-s'>Delete</a></tr>";
+                   
+                   $("#allPlayers").append(li);
+                   }  
+                        
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+                 
+             } 
+              
+                    //Edits person information by ID
+                 function editPerson(id){ 
+                      var myData = {
+                      firstName:$("#firstName"+id).val(),
+                      lastName:$("#lastName"+id).val(),
+                      email:$("#email"+id).val(),
+                      street:$("#street"+id).val(),
+                      zipCode:$("#zipCode"+id).val(),
+                      city:$("#city"+id).val()
+                  };
+                  
+               
+                  var myData1 = JSON.stringify(myData);
+              
+               var request = $.ajax({
+                   url: "api/person/edit/"+id, 
+                   type: "POST",
+                   dataType: "json" 
+               });
+               
+               request.done(function (msg){
+                findAll()
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+                 
+             } 
+             
+                 //Delete person
+                 function deletePerson(id){ 
+                   
+               var request = $.ajax({ 
+                   url: "api/person/delete/"+id, 
+                   type: "DELETE" 
+               }); 
+               request.done(function (msg){ 
+                findAll();
+                  $('#saved').fadeOut();
+                    $('#deleted').fadeIn();
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+        
+             } 
+               //Create personasdasda
+                 function createPerson(){  
+                   var myData = {
+                      firstName:$("#firstName").val(),
+                      lastName:$("#lastName").val(),
+                      email:$("#email").val(),
+                      street:$("#street").val(),
+                      zipCode:$("#zipCode").val(),
+                      city:$("#city").val()
+                  };
+                  
+               
+                  var myData1 = JSON.stringify(myData);
+                 // alert(myData1);
+               
+               var request = $.ajax({ 
+                   url: "api/person/add", 
+                   type: "POST",
+                  dataType:"text", 
+                  data:myData1
+               });
+               
+               request.done(function (msg){
+                //alert(msg);
+                 $('#deleted').fadeOut();
+                    $('#saved').fadeIn();
+                findAll();
+                 $('#myModal').modal('hide');
+             
+               
+                
+                
+                  });
+                  
+                request.fail(function (jqXHR, textStatus){ 
+                    alert("Request faile:"+ textStatus);
+                  
+                });
+               
+               
+                 
+             } 
+           
+               
+        </script>
+    </head>
+    <body > <br>
+        <p><div id="saved" hidden align="center" class="alert alert-success" role="alert"><h2>Person saved</h2></div> 
+        <div hidden id="deleted" align="center" class="alert alert-danger" role="alert"><h2>Person deleted</h2></div></p>
+        <p align="center">
+            
+        <button   type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Add Student</button> 
+        <div id="links"></div>
+            
+        
+        <p align="center"><button id="findAll" class="btn btn-success">Refresh personList</button> 
+       <div class="loader"></div>
+      <table class="table" id="allPlayers">
+            
+            
+        </table>
+ 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create person</h4>
+      </div>
+      <div class="modal-body" >
+           <form method="POST" >
+          <p>Firstname</br>
+              <input id="firstName" class="form-control" name="firstName" value="John" type="text" placeholder="Your Firstname" class="input-xlarge"  > 
+       <p>Lastname</br><input id="lastName"  class="form-control" name="lastName" value="Bob" type="text" placeholder="Your Lastname" class="input-xlarge" ></p>
+       <p>Email</br><input id="email" class="form-control" name="email" value="john@email.com" type="text" placeholder="contact@person.com" class="input-xlarge"  ></p> 
+       <p>Phone:</br><input id="phone" name="phone" value="22991199" class="form-control" type="text" placeholder="88888888" class="input-xlarge"  ></p>
+       <p>Street:</br><input id="street" name="street" value="Something road 23"  class="form-control" type="text" placeholder="Something something road 23" class="input-xlarge"  ></p>
+       <p>Zipcode:</br><input id="zipCode" name="zipcode" value="2900" class="form-control" type="text" placeholder="2900" class="input-xlarge"  ></p>
+      <p>City:</br><input id="city" name="city" value="Happiness" class="form-control" type="text" placeholder="Happinnes" class="input-xlarge"  ></p>
+      <p>Additionel info:</br><input id="additionalInfo" value="People with cash" name="additionalInfo" class="form-control" type="text" placeholder="Party all night" class="input-xlarge"  ></p>
+       <i id="modelBody"></i>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a id="createPerson"  class="btn btn-primary">Create Person</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    </body>
+</html>
