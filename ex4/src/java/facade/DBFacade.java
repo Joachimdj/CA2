@@ -64,7 +64,8 @@ public class DBFacade implements DBInterface{
     @Override
     public void createPerson(Person p) {
         em.getTransaction().begin();
-        em.persist(p);
+       // em.persist(p);
+        em.merge(p);
         em.getTransaction().commit();
     }
 

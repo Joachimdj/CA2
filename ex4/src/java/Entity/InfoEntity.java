@@ -6,11 +6,13 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 /**
@@ -26,6 +28,9 @@ public class InfoEntity implements Serializable {
     @SequenceGenerator(name = "g1", allocationSize = 1, initialValue = 1, sequenceName = "g1")
     private Long id;
     private String email;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 
     public InfoEntity(String email) {
         this.email = email;
@@ -48,6 +53,14 @@ public class InfoEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
  
 }

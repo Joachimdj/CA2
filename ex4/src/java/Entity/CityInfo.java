@@ -19,8 +19,6 @@ import javax.persistence.Id;
 public class CityInfo implements Serializable {
   
     @Id
-    
-  
     private String zipcode;
     private String city; 
 
