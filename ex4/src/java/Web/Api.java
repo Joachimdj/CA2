@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import com.google.gson.Gson;
+import dto.PersonDTO;
 import facade.DBInterface;
 import java.util.List;
 import javax.ws.rs.DELETE;
@@ -47,7 +48,26 @@ public class Api {
     @Path("add")
     
     public String addPerson(String s) {
-        Person p = gson.fromJson(s, Person.class);
+        //Person p = gson.fromJson(s, Person.class);
+        
+        PersonDTO pdto = gson.fromJson(s, PersonDTO.class);
+        
+        Person p = new Person();
+        
+        CityInfo ci = new CityInfo();
+        ci.setZipcode(pdto.getZipCode());
+        ci.setCity(pdto.getCity());
+        
+        Address a = new Address();
+        a.setStreet(pdto.getStreet());
+        a.setAdditionalinfo("");
+        a.setCity(ci);
+        
+        p.setFirstName(pdto.getFirstName());
+        p.setLastName(pdto.getLastName());
+        p.setEmail(pdto.getEmail());
+        p.setAddress(a);
+        
         
         facade.createPerson(p);
         return "{\"result\" : \"Ok\"}";
