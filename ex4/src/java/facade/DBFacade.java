@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author Michael
  */
-public class DBFacade {
+public class DBFacade implements DBInterface{
 
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2");
     private EntityManager em = emf.createEntityManager();
@@ -35,11 +35,13 @@ public class DBFacade {
 //        return instance;
 //    }
 
+    @Override
     public Person getPerson(Long id) {
         Person found = em.find(Person.class, id);
         return found;
     }
 
+    @Override
     public List<Person> getAllPersons() {
         List<Person> allPersons = new ArrayList();
         Query query = em.createQuery("SELECT e FROM Person e");
@@ -47,6 +49,7 @@ public class DBFacade {
         return allPersons;
     }
 
+    @Override
     public void deletePerson(Long id){
          
         Query query = em.createQuery("DELETE FROM Person p WHERE p.id = "+id);
@@ -58,24 +61,28 @@ public class DBFacade {
         
     }
     
+    @Override
     public void createPerson(Person p) {
         em.getTransaction().begin();
         em.persist(p);
         em.getTransaction().commit();
     }
 
+    @Override
     public void updatePerson(Person p) {
         em.getTransaction().begin();
         em.merge(p);
         em.getTransaction().commit();
     }
 
+    @Override
     public List<Person> findByHobby(Hobby h) {
         Query query = em.createQuery("SELECT p FROM Person p JOIN p.Hobby h WHERE h = " + h.getName());
         List<Person> byHobby = query.getResultList();
         return byHobby;
     }
 
+    @Override
     public List<String> getAllZipCodes() {
         Query query = em.createQuery("SELECT z.zipcode FROM CityInfo");
         List<String> zipcodes = query.getResultList();
