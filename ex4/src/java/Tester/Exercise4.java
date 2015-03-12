@@ -8,6 +8,7 @@ package Tester;
 import Entity.Person;
 import Entity.exceptions.NonexistentEntityException; 
 import facade.DBFacade;
+import facade.DBInterface;
 /**
  *
  * @author JoachimDittman
@@ -18,7 +19,7 @@ public class Exercise4 {
      * @param args the command line arguments
      */
        public static void main(String[] args) throws NonexistentEntityException, Exception {
-             DBFacade facade = DBFacade.getInstance();
+             DBInterface facade = new DBFacade();
              Person p = new Person("Lars", "Larsen");
              Person p1 = new Person("Mads", "Larsen");
       

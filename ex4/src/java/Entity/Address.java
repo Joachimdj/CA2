@@ -6,9 +6,8 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -22,7 +21,8 @@ public class Address implements Serializable {
     @Id
     private String street;
     private String additionalinfo;
-    @ManyToOne()
+    
+    @ManyToOne(cascade = CascadeType.ALL)
     private CityInfo city;
 
     public Address(String street, String additionalinfo, CityInfo city) {

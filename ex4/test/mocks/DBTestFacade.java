@@ -17,14 +17,14 @@ import javax.persistence.Query;
  *
  * @author Michael
  */
-public class DBFacade implements DBInterface{
+public class DBTestFacade implements DBInterface{
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("CA2TESTPU");
     private EntityManager em = emf.createEntityManager();
 
     private static DBFacade instance = null;
 
-    public DBFacade() {
+    public DBTestFacade() {
 
     }
 
@@ -64,8 +64,7 @@ public class DBFacade implements DBInterface{
     @Override
     public void createPerson(Person p) {
         em.getTransaction().begin();
-       // em.persist(p);
-        em.merge(p);
+        em.persist(p);
         em.getTransaction().commit();
     }
 
