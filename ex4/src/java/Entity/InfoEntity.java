@@ -8,10 +8,10 @@ package Entity;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
 
 /**
  *
@@ -22,7 +22,8 @@ import javax.persistence.InheritanceType;
 public class InfoEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "g1")
+    @SequenceGenerator(name = "g1", allocationSize = 1, initialValue = 1, sequenceName = "g1")
     private Long id;
     private String email;
 
